@@ -1,26 +1,32 @@
 <?php
-require_once __DIR__ . '/php/login/index.php';
+require_once(__DIR__.'/../php/vendor/autoload.php');
+
+use Vendor\Whatsappweb\auth;
+use Vendor\Whatsappweb\userData;
+use Vendor\Whatsappweb\DBConnection;
 
 session_start();
 
-$LoginControl = new LoginControl($con);
-$VerifySession = $LoginControl->VerifySession($_COOKIE['auth']);
+
+$VerifySession = auth::verify($_COOKIE['auth'] ?? NULL);
 
 if (!$VerifySession['success']) {
     header('Location: index.html?sesion=expired');
     exit();
 }else{
     $userId = $VerifySession['userId'];
+    
+    $dbConnection = new DBConnection();
+    $connection = $dbConnection->getConnection();
+    // Crear una instancia de userData
+    $userDataInstance = new userData($connection);
+    $GetCurrentUserData = $userDataInstance->GetCurrentUserData($userId);
 
-    $UsersControl = new UsersControl($con);
-    $GetCurrentUserData = $UsersControl->GetCurrentUserData($userId);
 
     if (!$GetCurrentUserData['success']) {
         echo 'Error al obtener los datos del usuario';
     }else{
         $userName = $GetCurrentUserData['userName'];
-        $userEmail = $GetCurrentUserData['email'];
-        $userPhone = $GetCurrentUserData['phone'];
     }
 }
 ?>
