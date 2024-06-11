@@ -1,7 +1,7 @@
 const Login = async (userData) => {
     try {
         const response = await axios.post('../php/login/routes.php', userData);
-        if (response.data.status === 'success') {
+        if (response.data.success) {
             // Redirect to the dashboard
             window.location.href = 'dashboard.php';
         } else {

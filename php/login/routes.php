@@ -8,7 +8,7 @@ use \Vendor\Whatsappweb\loadEnv;
 
 loadEnv::cargar();
 
-$secretkey = $_ENV['SECRET_KEY'] ?? NULL;
+$secretKey = $_ENV['SECRET_KEY'] ?? NULL;
 $lifeTime = $_ENV['LIFE_TIME'] ?? NULL;
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])){
@@ -18,8 +18,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])){
 //casos de login
     switch($action){
         case 'login':
-            $user = $data['user'] ?? '';
-            $pass = $data['password'] ?? '';
+            $user = $_POST['user'] ?? '';
+            $pass = $_POST['password'] ?? '';
 
             $dbConnection = new \Vendor\Whatsappweb\DBConnection();
             $control = new LoginControl($dbConnection);
@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])){
                     "userName" => $user
                 ];
 
-                $jwt = JWT::encode($payload, $secretkey, 'HS256');
+                $jwt = JWT::encode($payload, $secretKey, 'HS256');
 
                 //se genera un cookie con el token
                 setcookie("auth", $jwt, time() + ($lifeTime), "/", "", 1, 1);

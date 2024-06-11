@@ -31,7 +31,7 @@ class LoginControl{
                 // La contraseña no está hashada en la base de datos, pero coincide con la contraseña original
                 // Actualizar la contraseña con su versión hashada
                 $new_hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-                $sql_update = "UPDATE login_users SET hashed_password = ? WHERE id = ?";
+                $sql_update = "UPDATE users SET hashed_password = ? WHERE id = ?";
                 $stmt_update = $this->connection->prepare($sql_update);
                 $stmt_update->bind_param("si", $new_hashed_password, $row['id']);
                 $stmt_update->execute();

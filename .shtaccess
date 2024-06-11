@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteRule ^$ public/index.html [L]
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
+DirectoryIndex index.html
