@@ -77,7 +77,7 @@ export const sendExcelMessage = async (phoneNumbers, message, countryCode) => {
             countryCode: countryCode,
             action: 'sendExcelMessage'
         });
-        if (response.data._data.id.id) {
+        if (response.data.success) {
             Swal.fire({
                 icon: 'success',
                 title: 'Mensajes enviado',
@@ -89,6 +89,51 @@ export const sendExcelMessage = async (phoneNumbers, message, countryCode) => {
                 $("#clearexcel").css("display", "none");
                 $("#sendExcelMen").css("display", "none");
                 $("#messageExcel").css("display", "none");
+                $("#messageExcelArea").val('');
+                $("#mediaSpace").css("display", "none");
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.data.message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.response ? error.response.data.message : 'Unknown error',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    }
+}
+
+export const sendExcelMediaMessage = async (phoneNumbers, message, countryCode, path) => {
+    try {
+        const response = await axios.post('../php/excel/media.php', {
+            phoneNumbers: phoneNumbers,
+            message: message,
+            countryCode: countryCode,
+            path: path,
+            action: 'sendExcelMessageMedia'
+        });
+        if (response.data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Mensajes enviado',
+                text: response.data.message,
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                $("#phonesExcel").DataTable().clear().destroy();
+                $("#clearexcel").css("display", "none");
+                $("#sendExcelMen").css("display", "none");
+                $("#messageExcel").css("display", "none");
+                $("#mediaSpace").css("display", "none");
             });
         } else {
             Swal.fire({

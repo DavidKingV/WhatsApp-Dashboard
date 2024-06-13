@@ -242,9 +242,9 @@ if (!$VerifySession['success']) {
 
                                 <div class="row g-2">
                                     <div class="col-md py-1">  
-                                        <h6 class="card-title py-3">Tabla de números</h6>                                       
-                                        <div class="table-responsive">                                            
-                                            <table class="table" id="phonesExcel">
+                                        <h5 class="card-title py-3">Tabla de números</h5>                                       
+                                        <div class="table-responsive" style="background: aliceblue; border-radius: 10px; padding: 10px;">                                            
+                                            <table class="table table-striped" id="phonesExcel">
                                                 <thead>
                                                     <tr>             
                                                         <th class="text-center">Nombre</th>                           
@@ -256,17 +256,21 @@ if (!$VerifySession['success']) {
                                                 </tbody>    
                                             </table>
                                         </div>
-                                        <div class="row g-2">                                
+                                        <div class="row g-2 py-3">                                
                                             <div class="col-md py-3" id="messageExcel">  
-                                                <h6>Mensaje a enviar</h6>                                           
+                                                <h5>Mensaje a enviar</h5>                                           
                                                 <textarea class="form-control" id="messageExcelArea" name="messageExcel" placeholder="Mensaje" rows="3"></textarea>
                                             </div>
                                         </div> 
-                                        <div class="row g-2">                                
-                                            <div class="col-md py-3">                                                
-                                                <button type="button" id="sendExcelMen" class="btn btn-success">Enviar selección</button>
+                                        <div class="row g-2 py-2" id="mediaSpace">                                
+                                            <div class="col-md py-2">  
+                                                <h5>Archivo multimedia</h5>                                           
+                                                <input class="form-control" type="file" id="whatsappFile" name="whatsappFile">
                                             </div>
-                                            <div class="col-md py-3">                                                
+                                        </div> 
+                                        <div class="row g-2">                                
+                                            <div class="col-md py-3 d-flex justify-content-between">
+                                                <button type="button" id="sendExcelMen" class="btn btn-success">Enviar selección</button>
                                                 <button type="button" id="clearexcel" class="btn btn-warning">Limpiar tabla</button>
                                             </div>
                                         </div>                                                                             

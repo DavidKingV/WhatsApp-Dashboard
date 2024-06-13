@@ -30,6 +30,7 @@ function excelPhones(data) {
     $("#clearexcel").css("display", "block");
     $("#sendExcelMen").css("display", "block");
     $("#messageExcel").css("display", "block");
+    $("#mediaSpace").css("display", "block");
 }
 
 export { excelPhones };

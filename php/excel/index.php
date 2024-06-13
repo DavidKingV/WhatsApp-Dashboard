@@ -74,6 +74,39 @@ class Excel{
         }
     }
 
+    public function sendWhatsAppMedia($message, $phone, $path){
+        global $token;
+
+        $url = $_ENV['URL_WHATSAPP_MEDIA'] ?? NULL;
+
+        $VerifySession = auth::verify($_COOKIE['auth'] ?? NULL);
+
+        if (!$VerifySession['success']) {
+            return array('success' => false, 'message' => 'No tiene permisos para realizar esta acción');
+        } else {
+
+            $data = array(
+                'from' => $phone . '@c.us',
+                'text' => $message,
+                'file' => $path
+            );
+
+            $options = array(
+                'http' => array(
+                    'header' => "Content-type: application/json\r\n" .
+                                "Authorization: Bearer " . $token . "\r\n",
+                    'method' => 'POST',
+                    'content' => json_encode($data)
+                )
+            );
+
+            $context = stream_context_create($options);
+            $result = file_get_contents($url, false, $context);
+
+            return $result; 
+        }
+    }
+
 }
 
 ?>
