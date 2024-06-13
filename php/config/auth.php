@@ -17,6 +17,8 @@ class auth {
             } catch (\Exception $e) {
                 return array('success' => false, 'message' => $e->getMessage());
             }
+        }else{
+            return array('success' => false, 'message' => 'No tiene permisos para realizar esta acción');
         }
     }
 
