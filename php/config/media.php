@@ -1,5 +1,9 @@
 <?php
-namespace Vendor\Whatsappweb;
+require_once __DIR__ . '/../vendor/autoload.php'; 
+use Vendor\Whatsappweb\loadEnv;
+
+loadEnv::cargar();
+
 // Directorio donde se guardará el archivo temporalmente
 $tempDir = __DIR__ . '/../../public/temp/';
 
@@ -17,10 +21,17 @@ if (isset($_FILES['whatsappFile'])) {
         $tmpName = $file['tmp_name'];
         $fileName = basename($file['name']);
 
+        // Construye la ruta completa del archivo
+        $filePath = $tempDir . $fileName;
+
         // Mueve el archivo al directorio temporal
-        if (move_uploaded_file($tmpName, $tempDir . $fileName)) {
+        if (move_uploaded_file($tmpName, $filePath)) {
+            $baseUrl = $_ENV['BASE_URL'] ?? 'http://localhost';
+            $relativePath = str_replace(__DIR__ . '/../../public/', '', $filePath);
+            $webUrl = $baseUrl . '/' . $relativePath;
+            
             // Devuelve la ruta del archivo
-            echo json_encode(["message" => "Archivo cargado correctamente.", "path" => $tempDir . $fileName]);
+            echo json_encode(["message" => "Archivo cargado correctamente.", "path" => $webUrl ]);
         } else {
             echo json_encode(["message" => "Error al mover el archivo."]);
         }
