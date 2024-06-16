@@ -102,7 +102,7 @@ $("#sendExcelMen").on("click", async function() {
 
         const fileSaved = await saveFile();
         if (fileSaved && fileSaved.path) {
-            console.log(fileSaved.path);
+            console.log(fileSaved.path);            
                 
             let table = $('#phonesExcel').DataTable();
             let message = $("#messageExcelArea").val();
