@@ -34,6 +34,7 @@ $("#clearexcel").on("click", function() {
     $("#sendExcelMen").css("display", "none");
     $("#messageExcel").css("display", "none");
     $("#mediaSpace").css("display", "none");
+    $("#whatsappFile").val('');
 });
 
 //crea una funcion para comprobar si un input del tipo file tiene un archivo seleccionado
@@ -73,6 +74,22 @@ async function saveFile() {
 
 $("#sendExcelMen").on("click", async function() {  
 
+    let loadingSwal = Swal.fire({
+        title: 'Procesando...',
+        text: 'Por favor, espere.',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        }
+    });
+
+    let closeLoadingSwal = () => {
+        if (Swal.isVisible() && Swal.getTitle().innerText === 'Procesando...') {
+            Swal.close();
+        }
+    }
+
     if (!checkFile()) {
 
         let table = $('#phonesExcel').DataTable();
@@ -88,6 +105,7 @@ $("#sendExcelMen").on("click", async function() {
 
         if (phoneNumbers.length > 0) {
         await sendExcelMessage(phoneNumbers, message, countryCode);
+        closeLoadingSwal();
         }else{
             Swal.fire({
                 icon: 'error',
@@ -99,48 +117,57 @@ $("#sendExcelMen").on("click", async function() {
         }
 
     }else{
-
-        const fileSaved = await saveFile();
-        if (fileSaved && fileSaved.path) {
-            console.log(fileSaved.path);            
+        try {
+            const fileSaved = await saveFile();
+            if (fileSaved && fileSaved.path) {
+                console.log(fileSaved.path);            
+                    
+                let table = $('#phonesExcel').DataTable();
+                let message = $("#messageExcelArea").val();
+                let countryCode = '521';
                 
-            let table = $('#phonesExcel').DataTable();
-            let message = $("#messageExcelArea").val();
-            let countryCode = '521';
-            
-            var phoneNumbers = [];
-            table.$('input[type="checkbox"]:checked').each(function() {
-                var row = $(this).closest('tr');
-                var phoneNumber = table.row(row).data().telefonos;
-                phoneNumbers.push(phoneNumber);
-            });
+                var phoneNumbers = [];
+                table.$('input[type="checkbox"]:checked').each(function() {
+                    var row = $(this).closest('tr');
+                    var phoneNumber = table.row(row).data().telefonos;
+                    phoneNumbers.push(phoneNumber);
+                });
 
-            if (phoneNumbers.length > 0) {
-                console.log(fileSaved.path);
-            await sendExcelMediaMessage(phoneNumbers, message, countryCode, fileSaved.path);
+                if (phoneNumbers.length > 0) {
+                    console.log(fileSaved.path);
+                await sendExcelMediaMessage(phoneNumbers, message, countryCode, fileSaved.path);
+                closeLoadingSwal();
+                }else{
+                    closeLoadingSwal();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No hay números seleccionados',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
 
             }else{
+                closeLoadingSwal();
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'No hay números seleccionados',
+                    text: 'No se ha podido guardar el archivo',
                     showConfirmButton: false,
                     timer: 1500
                 });
             }
-
-        }else{
+        } catch (error) {
+            closeLoadingSwal();
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No se ha podido guardar el archivo',
+                text: 'Error al guardar el archivo',
                 showConfirmButton: false,
                 timer: 1500
             });
-        }
-
-        
-        
+        }                
     }
  
 });

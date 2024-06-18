@@ -83,7 +83,7 @@ export const sendExcelMessage = async (phoneNumbers, message, countryCode) => {
                 title: 'Mensajes enviado',
                 text: response.data.message,
                 showConfirmButton: false,
-                timer: 1500
+                timer: 3000
             }).then(() => {
                 $("#phonesExcel").DataTable().clear().destroy();
                 $("#clearexcel").css("display", "none");
@@ -121,7 +121,7 @@ export const sendExcelMediaMessage = async (phoneNumbers, message, countryCode, 
             path: path,
             action: 'sendExcelMessageMedia'
         });
-        if (response.data.success) {
+        if (response.data.responses) {
             Swal.fire({
                 icon: 'success',
                 title: 'Mensajes enviado',
@@ -134,12 +134,13 @@ export const sendExcelMediaMessage = async (phoneNumbers, message, countryCode, 
                 $("#sendExcelMen").css("display", "none");
                 $("#messageExcel").css("display", "none");
                 $("#mediaSpace").css("display", "none");
+                $("#whatsappFile").val('');
             });
         } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: response.data.message,
+                text: response.data.responses,
                 showConfirmButton: false,
                 timer: 1500
             });
