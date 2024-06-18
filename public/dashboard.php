@@ -304,7 +304,7 @@ if (!$VerifySession['success']) {
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <!-- js-->
-<script type="module" src="assets/js/dashboard.js"></script>
+<script type="module" src="assets/js/dashboard.js?v=2"></script>
 
 <!-- validate js-->
 <script src="assets/js/validate.js"></script>
